@@ -9,6 +9,6 @@ const pool = mysql.createPool({
   database: "attendance",
 });
 
-const host = 
+// const host = 
 
 module.exports = pool;
