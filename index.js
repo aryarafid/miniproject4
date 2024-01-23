@@ -4,6 +4,7 @@ const historyRouter = require("./routes/historyRouter")
 const login = require("./controllers/authController")
 const logout = require("./controllers/authController")
 const path = require('path');
+const session = require('express-session')
 
 const app = express();
 const port = 3000;
@@ -19,38 +20,62 @@ app.use("/history", historyRouter)
 // app.use("/login", login)
 // app.use("/logout", logout)
 
-// Your route to render the HTML form
-app.get('/login', (req, res) => {
-  res.render('login'); // Assuming you have a "form.ejs" file in your "views" directory
-});
+////////////////////////////////////////////////////////
+
+// middlewares
+app.use(session({
+  secret:'key',
+  resave:false,
+  saveUnitialized:true
+}))
 
 const authenticateUser = (req, res, next) => {
   const { username, password } = req.body;
   // Hardcoded credentials check
   if (username === 'admin' && password === 'admin') {
     // Authentication successful
+    req.session.user={username};
     next();
   } else {
     // Authentication failed
     res.render('login', { error: 'Invalid username or password' });
   }
 };
- 
-// Your route to handle form submission
-// app.post('/login', (req, res) => {
-//   const username = req.body.username; // Adjust "inputName" to match your input field name
-//   const password = req.body.password; // Adjust "inputName" to match your input field name
- 
-//   console.log(username,password)
 
-//   // Do something with the user input, e.g., send it back to the view
-//   // res.render('result', { userInput });
-// });
+const checkAuth = (req,res,next) => {
+  if (req.session.user) {
+    next()
+  } else {
+    res.redirect('/login')
+  }
+}
+
+/////////////////////////////////////////////////////////////////////
+ 
+
+// Your route to render the HTML form
+app.get('/login', (req, res) => {
+  res.render('login'); // Assuming you have a "form.ejs" file in your "views" directory
+});
 
 app.post('/login', authenticateUser, (req, res) => {
-  // res.render('dashboard', { username: req.body.username });
-  console.log('swag')
+  res.redirect('dashboard');
+  // console.log('swag')
 });
+
+app.get('/dashboard', checkAuth, (req, res) => {
+  res.render('dashboard', {username: req.session.user.username}); // Assuming you have a "form.ejs" file in your "views" directory
+});
+
+app.get('/logout', (req, res) => {
+  req.session.destroy((err)=>{
+    if (err) {
+      console.error('error destroying session:', err)
+    } res.redirect('/login')
+  })
+});
+
+////////////////////////////////////////////////////
 
 // Start server
 app.listen(port, () => {
