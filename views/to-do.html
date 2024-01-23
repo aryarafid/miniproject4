@@ -19,10 +19,13 @@
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 	<link href="assets/css/app.css" rel="stylesheet">
 	<link href="assets/css/icons.css" rel="stylesheet">
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"> -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css">
 	<!-- Theme Style CSS -->
 	<link rel="stylesheet" href="assets/css/dark-theme.css" />
 	<link rel="stylesheet" href="assets/css/semi-dark.css" />
 	<link rel="stylesheet" href="assets/css/header-colors.css" />
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"> 
 	<title>Amdash - Bootstrap 5 Admin Template</title>
 </head>
 
@@ -579,21 +582,10 @@
 			<div class="page-content">
 				<!--breadcrumb-->
 				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-					<div class="breadcrumb-title pe-3">Applications</div>
 					<div class="ps-3">
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb mb-0 p-0">
-								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
-								</li>
-								<li class="breadcrumb-item active" aria-current="page">To Do List</li>
-							</ol>
-						</nav>
 					</div>
 					<div class="ms-auto">
 						<div class="btn-group">
-							<button type="button" class="btn btn-primary">Settings</button>
-							<button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span class="visually-hidden">Toggle Dropdown</span>
-							</button>
 							<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">	<a class="dropdown-item" href="javascript:;">Action</a>
 								<a class="dropdown-item" href="javascript:;">Another action</a>
 								<a class="dropdown-item" href="javascript:;">Something else here</a>
@@ -605,14 +597,40 @@
 				<!--end breadcrumb-->
 				<div class="card">
 					<div class="card-body">
-						<h4 class="mb-0">To Do List</h4>
+						<h4 class="mb-0">Daily Timesheet</h4>
+						<div class="row gy-3">
+							<div class="col-md-4">
+								<label for="datepicker">Select Date:</label>
+								<input type="text" id="datepicker" class="form-control" name="datepicker" autocomplete="off">
+							</div>
+							<div class="col-md-4">
+								<label for="startTime">Start Time:</label>
+								<input type="time" id="startTime" class="form-control" autocomplete="off">
+							</div>
+							<div class="col-md-4">
+								<label for="endTime">End Time:</label>
+								<input type="time" id="endTime" class="form-control" autocomplete="off">
+							</div>
+						</div>
 						<hr/>
 						<div class="row gy-3">
-							<div class="col-md-10">
-								<input id="todo-input" type="text" class="form-control" value="">
+							<div class="col-md-3">
+								<div class="dropdown">
+									<select class="form-select mb-3" aria-label="Default select example">
+										<option selected>Tipe Pekerjaan</option>
+										<option value="1">Audit</option>
+										<option value="2">BAU</option>
+										<option value="3">Project</option>
+										<option value="1">CR</option>
+										<option value="2">SWR</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-7">
+								<textarea class="form-control" id="inputAddress" placeholder="Deskripsi Pekerjaan" rows="3"></textarea>
 							</div>
 							<div class="col-md-2 text-end d-grid">
-								<button type="button" onclick="CreateTodo();" class="btn btn-primary">Add todo</button>
+								<button type="button" onclick="CreateTodo();" class="btn btn-primary">Input</button>
 							</div>
 						</div>
 						<div class="form-row mt-3">
@@ -623,6 +641,7 @@
 					</div>
 				</div>
 			</div>
+
 		</div>
 		<!--end page wrapper -->
 		<!--start overlay-->
@@ -631,77 +650,14 @@
 		<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
 		<!--End Back To Top Button-->
 		<footer class="page-footer">
-			<p class="mb-0">Copyright © 2021. All right reserved.</p>
+			<p class="mb-0">Copyright © 2024. All right reserved.</p>
 		</footer>
 	</div>
 	<!--end wrapper-->
-	<!--start switcher-->
-	<div class="switcher-wrapper">
-		<div class="switcher-btn"> <i class='bx bx-cog bx-spin'></i>
-		</div>
-		<div class="switcher-body">
-			<div class="d-flex align-items-center">
-				<h5 class="mb-0 text-uppercase">Theme Customizer</h5>
-				<button type="button" class="btn-close ms-auto close-switcher" aria-label="Close"></button>
-			</div>
-			<hr/>
-			<h6 class="mb-0">Theme Styles</h6>
-			<hr/>
-			<div class="d-flex align-items-center justify-content-between">
-				<div class="form-check">
-					<input class="form-check-input" type="radio" name="flexRadioDefault" id="lightmode" checked>
-					<label class="form-check-label" for="lightmode">Light</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="radio" name="flexRadioDefault" id="darkmode">
-					<label class="form-check-label" for="darkmode">Dark</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="radio" name="flexRadioDefault" id="semidark">
-					<label class="form-check-label" for="semidark">Semi Dark</label>
-				</div>
-			</div>
-			<hr/>
-			<div class="form-check">
-				<input class="form-check-input" type="radio" id="minimaltheme" name="flexRadioDefault">
-				<label class="form-check-label" for="minimaltheme">Minimal Theme</label>
-			</div>
-			<hr/>
-			<h6 class="mb-0">Header Colors</h6>
-			<hr/>
-			<div class="header-colors-indigators">
-				<div class="row row-cols-auto g-3">
-					<div class="col">
-						<div class="indigator headercolor1" id="headercolor1"></div>
-					</div>
-					<div class="col">
-						<div class="indigator headercolor2" id="headercolor2"></div>
-					</div>
-					<div class="col">
-						<div class="indigator headercolor3" id="headercolor3"></div>
-					</div>
-					<div class="col">
-						<div class="indigator headercolor4" id="headercolor4"></div>
-					</div>
-					<div class="col">
-						<div class="indigator headercolor5" id="headercolor5"></div>
-					</div>
-					<div class="col">
-						<div class="indigator headercolor6" id="headercolor6"></div>
-					</div>
-					<div class="col">
-						<div class="indigator headercolor7" id="headercolor7"></div>
-					</div>
-					<div class="col">
-						<div class="indigator headercolor8" id="headercolor8"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!--end switcher-->
 	<!-- Bootstrap JS -->
 	<script src="assets/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
 	<!--plugins-->
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
@@ -709,6 +665,41 @@
 	<script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
 	<!--app JS-->
 	<script src="assets/js/app.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>  
+	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+	<script>
+		// Inisialisasi Datepicker
+		$('#datepicker').datepicker({
+			format: 'yyyy-mm-dd',
+			autoclose: true
+		});
+	
+		// Inisialisasi Timepicker untuk Jam Mulai
+		$('#startTime').timepicker({
+			showMeridian: false,
+			defaultTime: false
+		});
+	
+		// Inisialisasi Timepicker untuk Jam Selesai
+		$('#endTime').timepicker({
+			showMeridian: false,
+			defaultTime: false
+		});
+	
+		// Fungsi untuk menambahkan todo dengan tanggal, jam mulai, dan jam selesai
+		function CreateTodo() {
+			var todoInput = $('#todo-input').val();
+			var selectedDate = $('#datepicker').val();
+			var startTime = $('#startTime').val();
+			var endTime = $('#endTime').val();
+	
+			// Lakukan sesuatu dengan data yang telah dipilih
+			// Contoh: console.log(todoInput, selectedDate, startTime, endTime);
+		}
+	</script>
 	<script>
 		// to do list 
 		 var todos = [{
