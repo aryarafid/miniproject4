@@ -571,19 +571,19 @@
                     </select>
                   </div>
                 </div>
-				<div class="col-md-3">
-					<div class="dropdown">
-					  <select
-						class="form-select mb-3"
-						aria-label="Default select example"
-					  >
-						<option selected>Prioritas</option>
-						<option value="1">Tinggi</option>
-						<option value="2">Sedang</option>
-						<option value="3">Rendah</option>
-					  </select>
-					</div>
-				  </div>
+                <div class="col-md-3">
+                  <div class="dropdown">
+                    <select
+                      class="form-select mb-3"
+                      aria-label="Default select example"
+                    >
+                      <option selected>Prioritas</option>
+                      <option value="1">Tinggi</option>
+                      <option value="2">Sedang</option>
+                      <option value="3">Rendah</option>
+                    </select>
+                  </div>
+                </div>
                 <div class="col-md-7">
                   <textarea
                     class="form-control"
@@ -650,12 +650,12 @@
       });
 
       // Inisialisasi Timepicker untuk Jam Mulai
-    //   $("#startTime").timepicker({
-    //     // showMeridian: false, // Ubah ini menjadi false untuk format 24 jam
-    //     // defaultTime: false,
-    //     use24hours: true,
-    //     format: "HH:mm",
-    //   });
+      //   $("#startTime").timepicker({
+      //     // showMeridian: false, // Ubah ini menjadi false untuk format 24 jam
+      //     // defaultTime: false,
+      //     use24hours: true,
+      //     format: "HH:mm",
+      //   });
 
       $("#startTime").timepicker({
         timeFormat: "HH:mm",
@@ -678,14 +678,14 @@
       });
 
       // Inisialisasi Timepicker untuk Jam Selesai
-    //   $("#endTime").timepicker({
-    //     // showMeridian: false, // Ubah ini menjadi false untuk format 24 jam
-    //     // defaultTime: false,
-    //     format: "HH:mm",
-    //     use24hours: true,
-    //   });
+      //   $("#endTime").timepicker({
+      //     // showMeridian: false, // Ubah ini menjadi false untuk format 24 jam
+      //     // defaultTime: false,
+      //     format: "HH:mm",
+      //     use24hours: true,
+      //   });
 
-	$("#endTime").timepicker({
+      $("#endTime").timepicker({
         timeFormat: "HH:mm",
 
         interval: 1,
@@ -704,8 +704,6 @@
 
         scrollbar: true,
       });
-
-	
 
       // Fungsi untuk menambahkan todo dengan tanggal, jam mulai, dan jam selesai
       function CreateTodo() {
