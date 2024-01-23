@@ -38,7 +38,9 @@ const authenticateUser = (req, res, next) => {
     next();
   } else {
     // Authentication failed
-    res.render('login', { error: 'Invalid username or password' });
+    req.session.authError = "belum login keknya"
+    res.redirect('/login')
+    // res.render('login', { error: 'Invalid username or password' });
   }
 };
 
