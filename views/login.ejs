@@ -1,32 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    Required meta tags
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--favicon-->
-    <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
+    <link rel ="icon" href="<%= '/assets/images/favicon-32x32.png' %>" type="image/png" />
     <!--plugins-->
-    <link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
-    <link
-      href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css"
-      rel="stylesheet"
-    />
-    <link
-      href="assets/plugins/metismenu/css/metisMenu.min.css"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" href="<%=' /assets/plugins/simplebar/css/simplebar.css' %>" />
+    <!-- <link
+      href="<%= '/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css' %>"
+    /> -->
+    <link rel="stylesheet" href="<%=' /assets/plugins/metismenu/css/metisMenu.min.css' %>" />
     <!-- loader-->
-    <link href="assets/css/pace.min.css" rel="stylesheet" />
-    <script src="assets/js/pace.min.js"></script>
+    <link rel="stylesheet" href="<%=' /assets/css/pace.min.css' %>" />
+    <script src="<%=' /assets/js/pace.min.js' %>"></script>
     <!-- Bootstrap CSS -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<%=' /assets/css/bootstrap.min.css' %>" />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
-      rel="stylesheet"
     />
-    <link href="assets/css/app.css" rel="stylesheet" />
-    <link href="assets/css/icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<%=' /assets/css/app.css ' %>" />
+    <link rel="stylesheet" href="<%=' /assets/css/icons.css' %>" />
     <title>Amdash - Bootstrap 5 Admin Template</title>
   </head>
 
@@ -49,10 +43,11 @@
                             >Username</label
                           >
                           <input
-                            type="email"
+                            type="text"
                             class="form-control"
-                            id="inputEmailAddress"
+                            id="username"
                             placeholder="Username"
+                            name="username"
                           />
                         </div>
                         <div class="col-12">
@@ -61,10 +56,11 @@
                           >
                           <div class="input-group" id="show_hide_password">
                             <input
-                              type="password"
+                              type="text"
                               class="form-control border-end-0"
-                              id="inputChoosePassword"
+                              id="password"
                               placeholder="Enter Password"
+                              name="password"
                             />
                             <a
                               href="javascript:;"
@@ -98,12 +94,12 @@
     </div>
     <!--end wrapper-->
     <!-- Bootstrap JS -->
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="<%= '/assets/js/bootstrap.bundle.min.js' %>"></script>
     <!--plugins-->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
-    <script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
-    <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+    <script src="<%= '/assets/js/jquery.min.js' %>"></script>
+    <script src="<%= '/assets/plugins/simplebar/js/simplebar.min.js' %>"></script>
+    <script src="<%= '/assets/plugins/metismenu/js/metisMenu.min.js' %>"></script>
+    <script src="<%= '/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js' %>"></script>
     <!--Password show & hide js -->
     <script>
       $(document).ready(function () {
@@ -124,6 +120,6 @@
       });
     </script>
     <!--app JS-->
-    <script src="assets/js/app.js"></script>
+    <script src=" <%= '/assets/js/app.js' %>"></script>
   </body>
 </html>
