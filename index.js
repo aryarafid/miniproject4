@@ -9,6 +9,7 @@ const app = express();
 const port = 3000;
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
@@ -22,15 +23,33 @@ app.use("/history", historyRouter)
 app.get('/login', (req, res) => {
   res.render('login'); // Assuming you have a "form.ejs" file in your "views" directory
 });
+
+const authenticateUser = (req, res, next) => {
+  const { username, password } = req.body;
+  // Hardcoded credentials check
+  if (username === 'admin' && password === 'admin') {
+    // Authentication successful
+    next();
+  } else {
+    // Authentication failed
+    res.render('login', { error: 'Invalid username or password' });
+  }
+};
  
 // Your route to handle form submission
-app.post('/login', (req, res) => {
-  const username = req.body.username; // Adjust "inputName" to match your input field name
-  const password = req.body.password; // Adjust "inputName" to match your input field name
+// app.post('/login', (req, res) => {
+//   const username = req.body.username; // Adjust "inputName" to match your input field name
+//   const password = req.body.password; // Adjust "inputName" to match your input field name
  
-  
-  // Do something with the user input, e.g., send it back to the view
-  res.render('result', { userInput });
+//   console.log(username,password)
+
+//   // Do something with the user input, e.g., send it back to the view
+//   // res.render('result', { userInput });
+// });
+
+app.post('/login', authenticateUser, (req, res) => {
+  // res.render('dashboard', { username: req.body.username });
+  console.log('swag')
 });
 
 // Start server

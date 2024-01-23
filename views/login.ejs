@@ -37,7 +37,7 @@
                 <div class="card-body">
                   <div class="border p-4 rounded">
                     <div class="form-body">
-                      <form class="row g-3">
+                      <form class="row g-3" method="post" action="/login">
                         <div class="col-12">
                           <label for="inputEmailAddress" class="form-label"
                             >Username</label
@@ -48,6 +48,7 @@
                             id="username"
                             placeholder="Username"
                             name="username"
+                            required
                           />
                         </div>
                         <div class="col-12">
@@ -61,6 +62,7 @@
                               id="password"
                               placeholder="Enter Password"
                               name="password"
+                              required
                             />
                             <a
                               href="javascript:;"
