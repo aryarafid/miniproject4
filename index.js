@@ -16,6 +16,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs'); // Set your templating engine
 
+app.use(express.static(path.join(__dirname, 'public')));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs'); // Set your templating engine
+
 app.use("/history", historyRouter)
 // app.use("/login", login)
 // app.use("/logout", logout)
