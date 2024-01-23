@@ -1,10 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const historyRouter = require("./routes/historyRouter")
-const login = require("./controllers/authController")
-const logout = require("./controllers/authController")
 const path = require('path');
 const session = require('express-session')
+const {authenticateUser, checkAuth} = require('./middlewares/middlewares')
 
 const app = express();
 const port = 3000;
@@ -16,48 +15,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs'); // Set your templating engine
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs'); // Set your templating engine
+///////////////////////////////////////////////////////////
 
+// use route
 app.use("/history", historyRouter)
-// app.use("/login", login)
-// app.use("/logout", logout)
 
 ////////////////////////////////////////////////////////
 
-// middlewares
+// session setup
 app.use(session({
   secret:'key',
   resave:false,
   saveUnitialized:true
 }))
 
-const authenticateUser = (req, res, next) => {
-  const { username, password } = req.body;
-  // Hardcoded credentials check
-  if (username === 'admin' && password === 'admin') {
-    // Authentication successful
-    req.session.user={username};
-    next();
-  } else {
-    // Authentication failed
-    req.session.authError = "belum login keknya"
-    res.redirect('/login')
-    // res.render('login', { error: 'Invalid username or password' });
-  }
-};
-
-const checkAuth = (req,res,next) => {
-  if (req.session.user) {
-    next()
-  } else {
-    res.redirect('/login')
-  }
-}
-
 /////////////////////////////////////////////////////////////////////
- 
 
 // Your route to render the HTML form
 app.get('/login', (req, res) => {
