@@ -45,7 +45,7 @@ app.post("/login", authenticateUser, (req, res) => {
 });
 
 app.get("/home", checkAuth, (req, res) => {
-  res.render("home.ejs", { username: req.session.user.username }); // Assuming you have a "form.ejs" file in your "views" directory
+  res.render("home", { username: req.session.user.username }); // Assuming you have a "form.ejs" file in your "views" directory
   // res.render('swag.ejs', {username: req.session.user.username}); // Assuming you have a "form.ejs" file in your "views" directory
 });
 
@@ -63,20 +63,8 @@ app.get("/input", (req, res) => {
 });
 
 app.post("/input", (req, res) => {
-  // You can still access the processFormInput function here if needed
-  const formData = req.body;
-  console.log(formData)
-
-  // historyController
-  //   .createHistory(req.body)
-  //   .then((result) => {
-  //     // Render the 'to-do' view or handle the result as needed
-  //     res.render("to-do", { result });
-  //   })
-  //   .catch((error) => {
-  //     // Handle errors appropriately
-  //     res.status(500).send("Internal Server Error");
-  //   });
+  const { nama_Tugas, prioritas, workStart, workEnd, description } = req.body;
+  historyController.createHistory(nama_Tugas, prioritas, workStart, workEnd, description);
 });
 
 app.get("/history", checkAuth, (req, res) => {
