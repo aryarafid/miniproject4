@@ -18,7 +18,7 @@ app.set('view engine', 'ejs'); // Set your templating engine
 ///////////////////////////////////////////////////////////
 
 // use route
-app.use("/history", historyRouter)
+app.use("/api/history", historyRouter)
 
 ////////////////////////////////////////////////////////
 
@@ -37,12 +37,12 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', authenticateUser, (req, res) => {
-  res.redirect('dashboard');
+  res.redirect('home');
   // console.log('swag')
 });
 
-app.get('/dashboard', checkAuth, (req, res) => {
-  res.render('dashboard', {username: req.session.user.username}); // Assuming you have a "form.ejs" file in your "views" directory
+app.get('/home', checkAuth, (req, res) => {
+  res.render('home', {username: req.session.user.username}); // Assuming you have a "form.ejs" file in your "views" directory
 });
 
 app.get('/logout', (req, res) => {
@@ -52,6 +52,15 @@ app.get('/logout', (req, res) => {
     } res.redirect('/login')
   })
 });
+
+app.get('/input', (req, res) => {
+  res.render('to-do'); // Assuming you have a "form.ejs" file in your "views" directory
+});
+
+app.get('/history', (req, res) => {
+  res.render('history'); // Assuming you have a "form.ejs" file in your "views" directory
+});
+
 
 ////////////////////////////////////////////////////
 
