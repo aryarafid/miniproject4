@@ -1,0 +1,55 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  header {
+    background-color: #f8f8f8;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    width: 24px;
+    height: 24px;
+    font-weight: bold;
+    margin-right: auto;
+  }
+  
+  .login-btn {
+    padding: 8px 15px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-left: auto; /* Move login button to the right */
+  }
+  
+  .main-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 50px;
+  }
+  
+  .left-content {
+    width: 200%; /* Fix typo, should be 200px, not 200 */
+    height: auto;
+  }
+  
+  .right-content img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Custom Styles */
+  h1 {
+    color: #333;
+  }
