@@ -10,33 +10,23 @@ const app = express();
 // CRUD APIs
 
 // Create
-const createHistory = (req,res) => (
-  nama_Tugas,
-  prioritas,
-  workStart,
-  workEnd,
-  description
-) => {
-  const status= false
+const createHistory = (req, res, callback) => {
+  const { nama_Tugas, prioritas, workStart, workEnd, description } = req.body;
 
   const workDate = moment().format("YYYY-MM-DD");
 
-  console.log(nama_Tugas, prioritas, workStart, workEnd, description, workDate);
-
-  // cek selisih jam agar tidak 24jam
   const format = "HH:mm";
   const startWorkHour = moment(workStart, format);
   const endWorkHour = moment(workEnd, format);
-  const differenceInHrs = endWorkHour.diff(startWorkHour, "hours");
 
-  if(endWorkHour.isBefore(startWorkHour)){
-    console.log('error');
-    return res.status(500).json("Hanya bisa memasukkan jam selesai setelah jam mulai");
+  if (endWorkHour.isBefore(startWorkHour)) {
+    console.log("error");
+    throw console.error("Hanya bisa memasukkan jam selesai setelah jam mulai");
   }
 
   // // if work date != moment() -> return res fail
   if (workDate != moment().format("YYYY-MM-DD")) {
-    return res.status(500).json("Hanya bisa memasukkan di tanggal yang sama");
+    throw console.error("Hanya bisa memasukkan di tanggal yang sama");
   }
 
   pool.query(
@@ -44,10 +34,24 @@ const createHistory = (req,res) => (
     [nama_Tugas, prioritas, workStart, workEnd, description, workDate],
     (error, results) => {
       if (error) {
-        res.status(500).json({ error });
+        throw error;
       } else {
-        res.status(201).json({ id: results.insertId });
-        return status = true
+        console.log(
+          "berhasil => " +
+            nama_Tugas +
+            "," +
+            prioritas +
+            "," +
+            workStart +
+            "," +
+            workEnd +
+            "," +
+            description +
+            "," +
+            workDate
+        );
+        const successMessage = "Sukses input data";
+        callback(successMessage);
       }
     }
   );
@@ -55,24 +59,19 @@ const createHistory = (req,res) => (
 
 // Read (all)
 const getAllHistory = (req, res) => {
-  return data = pool.query("SELECT * FROM history", (err, results) => {
+  return (data = pool.query("SELECT * FROM history", (err, results) => {
     if (err) throw err;
-  });
+  }));
 };
 
-// router.get('/all', (req, res) => {
-//   // Run a database query
-//   pool.query('SELECT * FROM history', (err, results) => {
-//     if (err) {
-//       console.error('Error executing query:', err);
-//       res.status(500).send('Internal Server Error');
-//       return;
-//     }
-
-//     // Pass the query result to the rendering process
-//     res.render('history2', { username, results: results });
-//   });
-// });
+const getAllHistory2 = (req, res) => {
+  return (data = pool.query(
+    "SELECT *, CASE WHEN DATE(workDate) = CURDATE() THEN true ELSE false END AS perbandingan FROM history",
+    (err, results) => {
+      if (err) throw err;
+    }
+  ));
+};
 
 // Read (one)
 const getHistory = (req, res) => {

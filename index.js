@@ -64,36 +64,31 @@ app.get("/input", (req, res) => {
   res.render("to-do"); // Assuming you have a "form.ejs" file in your "views" directory
 });
 
+
 app.post("/input", (req, res) => {
-  const { nama_Tugas, prioritas, workStart, workEnd, description } = req.body;
-  const status = historyController.createHistory(
-    nama_Tugas,
-    prioritas,
-    workStart,
-    workEnd,
-    description
-  );
-  if (status === true) {
-    res.render('history')
-  }
+  historyController.createHistory(req, res, (successMessage) => {
+    res.render('to-do',{successMessage})
+    // res.render("template/successalert");
+    // res.redirect("history");
+  });
 });
 
-app.get('/history', (req, res) => {
+app.get("/history", (req, res) => {
   // Run a query to get all history data
-  const query = 'SELECT * FROM history';
+  const query =
+    "SELECT *, CASE WHEN DATE(workDate) = CURDATE() THEN true ELSE false END AS perbandingan FROM history";
   pool.query(query, (err, results) => {
     if (err) {
-      console.error('Error executing query:', err);
-      res.status(500).send('Internal Server Error');
+      console.error("Error executing query:", err);
+      res.status(500).send("Internal Server Error");
       return;
     }
 
     // Pass the history data to the view
     // res.render('history2', { history: results });
-    res.render('history3', { history: results });
+    res.render("history3", { history: results });
   });
 });
-
 
 ////////////////////////////////////////////////////
 

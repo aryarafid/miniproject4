@@ -38,7 +38,6 @@
         <h4 class="mb-0">Daily Timesheet</h4>
 
         <form method="post" action="/input">
-        
           <!-- 1strow -->
           <div class="row gy-3">
             <div class="col-md-4">
@@ -127,12 +126,7 @@
               ></textarea>
             </div>
             <div class="col-md-2 text-end d-grid">
-              <button
-                type="submit"
-                class="btn btn-primary"
-              >
-                Input
-              </button>
+              <button type="submit" class="btn btn-primary">Input</button>
             </div>
           </div>
 
@@ -142,6 +136,12 @@
             </div>
           </div>
         </form>
+
+        <% if(typeof successMessage!== 'undefined') { %>
+        <script>
+          alert("<%= successMessage %>");
+        </script>
+        <%}%>
       </div>
     </div>
   </div>
