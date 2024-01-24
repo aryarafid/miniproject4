@@ -42,7 +42,8 @@ app.post('/login', authenticateUser, (req, res) => {
 });
 
 app.get('/home', checkAuth, (req, res) => {
-  res.render('home', {username: req.session.user.username}); // Assuming you have a "form.ejs" file in your "views" directory
+  res.render('home.ejs', {username: req.session.user.username}); // Assuming you have a "form.ejs" file in your "views" directory
+  // res.render('swag.ejs', {username: req.session.user.username}); // Assuming you have a "form.ejs" file in your "views" directory
 });
 
 app.get('/logout', (req, res) => {
@@ -53,11 +54,11 @@ app.get('/logout', (req, res) => {
   })
 });
 
-app.get('/input', (req, res) => {
+app.get('/input', checkAuth, (req, res) => {
   res.render('to-do'); // Assuming you have a "form.ejs" file in your "views" directory
 });
 
-app.get('/history', (req, res) => {
+app.get('/history', checkAuth, (req, res) => {
   res.render('history'); // Assuming you have a "form.ejs" file in your "views" directory
 });
 
