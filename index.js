@@ -5,6 +5,9 @@ const path = require("path");
 const session = require("express-session");
 const { authenticateUser, checkAuth } = require("./middlewares/middlewares");
 const historyController = require("./controllers/historyController");
+const router = express.Router();
+const pool = require("./config");
+const moment = require("moment");
 
 const app = express();
 const port = 3000;
@@ -45,8 +48,7 @@ app.post("/login", authenticateUser, (req, res) => {
 });
 
 app.get("/home", checkAuth, (req, res) => {
-  res.render("home", { username: req.session.user.username }); // Assuming you have a "form.ejs" file in your "views" directory
-  // res.render('swag.ejs', {username: req.session.user.username}); // Assuming you have a "form.ejs" file in your "views" directory
+  res.render("land", { username: req.session.user.username });
 });
 
 app.get("/logout", (req, res) => {
@@ -64,12 +66,30 @@ app.get("/input", (req, res) => {
 
 app.post("/input", (req, res) => {
   const { nama_Tugas, prioritas, workStart, workEnd, description } = req.body;
-  historyController.createHistory(nama_Tugas, prioritas, workStart, workEnd, description);
+  historyController.createHistory(
+    nama_Tugas,
+    prioritas,
+    workStart,
+    workEnd,
+    description
+  );
 });
 
-app.get("/history", checkAuth, (req, res) => {
-  res.render("history"); // Assuming you have a "form.ejs" file in your "views" directory
+app.get('/history', (req, res) => {
+  // Run a query to get all history data
+  const query = 'SELECT * FROM history';
+  pool.query(query, (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    // Pass the history data to the view
+    res.render('history2', { history: results });
+  });
 });
+
 
 ////////////////////////////////////////////////////
 

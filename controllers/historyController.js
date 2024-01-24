@@ -10,11 +10,17 @@ const app = express();
 // CRUD APIs
 
 // Create
-const createHistory = ( nama_Tugas, prioritas, workStart, workEnd, description) => {
+const createHistory = (
+  nama_Tugas,
+  prioritas,
+  workStart,
+  workEnd,
+  description
+) => {
   // const { nama_Tugas, prioritas, workStart, workEnd, description } =req.body;
   // const { nama_Tugas, prioritas, workStart, workEnd, description } = formData;
 
-  const workDate = moment().format('YYYY-MM-DD');
+  const workDate = moment().format("YYYY-MM-DD");
 
   console.log(nama_Tugas, prioritas, workStart, workEnd, description, workDate);
 
@@ -46,14 +52,24 @@ const createHistory = ( nama_Tugas, prioritas, workStart, workEnd, description) 
 
 // Read (all)
 const getAllHistory = (req, res) => {
-  pool.query("SELECT * FROM history", (error, results) => {
-    if (error) {
-      res.status(500).json({ error });
-    } else {
-      res.status(200).json(results);
-    }
+  return data = pool.query("SELECT * FROM history", (err, results) => {
+    if (err) throw err;
   });
 };
+
+// router.get('/all', (req, res) => {
+//   // Run a database query
+//   pool.query('SELECT * FROM history', (err, results) => {
+//     if (err) {
+//       console.error('Error executing query:', err);
+//       res.status(500).send('Internal Server Error');
+//       return;
+//     }
+
+//     // Pass the query result to the rendering process
+//     res.render('history2', { username, results: results });
+//   });
+// });
 
 // Read (one)
 const getHistory = (req, res) => {
