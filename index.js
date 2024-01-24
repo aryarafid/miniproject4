@@ -66,13 +66,16 @@ app.get("/input", (req, res) => {
 
 app.post("/input", (req, res) => {
   const { nama_Tugas, prioritas, workStart, workEnd, description } = req.body;
-  historyController.createHistory(
+  const status = historyController.createHistory(
     nama_Tugas,
     prioritas,
     workStart,
     workEnd,
     description
   );
+  if (status === true) {
+    res.render('history')
+  }
 });
 
 app.get('/history', (req, res) => {
@@ -86,7 +89,8 @@ app.get('/history', (req, res) => {
     }
 
     // Pass the history data to the view
-    res.render('history2', { history: results });
+    // res.render('history2', { history: results });
+    res.render('history3', { history: results });
   });
 });
 

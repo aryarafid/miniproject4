@@ -29,19 +29,40 @@
 
   <div class="row flex-wrap" id="taskCards">
     <!-- Data Dummy will be populated dynamically -->
-
     <% history.forEach(record => { %>
-    <p>Tugas ke - <%= record.Id %></p>
-    <p>Nama Tugas: <%= record.nama_Tugas %></p>
-    <p>prioritas: <%= record.prioritas %></p>
-    <p>description: <%= record.description %></p>
-    <p>workStart: <%= record.workStart %></p>
-    <p>workEnd: <%= record.workEnd %></p>
-    <p>
-      workDate: <%= record.workDate.toLocaleDateString( 'id-ID', { day:
-      'numeric', month: 'long', year: 'numeric' }) %>
-    </p>
+
+    <div class="card" style="width: 18rem">
+      <div class="card-body">
+        <p>Tugas ke - <%= record.Id %></p>
+        <hr />
+        <p>Nama Tugas: <%= record.nama_Tugas %></p>
+        <p>prioritas: <%= record.prioritas %></p>
+        <p>description: <%= record.description %></p>
+        <p>workStart: <%= record.workStart %></p>
+        <p>workEnd: <%= record.workEnd %></p>
+        <p>
+          workDate: <%= record.workDate.toLocaleDateString( 'id-ID', { day:
+          'numeric', month: 'long', year: 'numeric' }) %>
+        </p>
+        <!-- <p>
+          workDate: <%= record.workDate %>
+        </p>
+        <p>
+          <%= new Date()%>
+        </p>
+        <% const workDateNow = record.workDate.setHours(0,0,0,0)%>
+        <%= console.log(record.Id,workDateNow) %>
+        <% const dateNow = new Date()%>
+        <% dateNow.setHours(0,0,0,0) %>
+        <% if(workDateNow == dateNow) { %>
+          <button type="button" class="btn btn-success">Edit</button>
+        <% } %> -->
+        <!-- <button type="button" class="btn btn-danger">Delete</button> -->
+      </div>
+    </div>
+
     <% }); %>
+    <!-- <%= console.log(new Date().setHours(0,0,0,0)) %> -->
   </div>
 </div>
 

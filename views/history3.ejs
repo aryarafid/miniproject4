@@ -1,0 +1,205 @@
+<%- include('./template/header'); %>
+<div class="container mt-5">
+  <h6 class="mb-0 text-uppercase">Card with list group</h6>
+  <hr />
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <select id="monthSelect" class="form-select">
+      <option value="all">All Months</option>
+      <option value="01">January</option>
+      <option value="02">February</option>
+      <option value="03">March</option>
+      <!-- Tambahkan opsi bulan lainnya -->
+    </select>
+    <select id="yearSelect" class="form-select">
+      <option value="all">All Years</option>
+      <option value="2023">2023</option>
+      <option value="2024">2024</option>
+      <!-- Tambahkan opsi tahun lainnya -->
+    </select>
+  </div>
+
+  <div class="row flex-wrap" id="taskCards">
+    <!-- Data Dummy will be populated dynamically -->
+  </div>
+</div>
+
+<!-- Modal Details -->
+<div
+  class="modal fade"
+  id="detailsModal"
+  tabindex="-1"
+  aria-labelledby="detailsModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="detailsModalLabel">Task Details</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body" id="detailsModalBody">
+        <!-- Isi modal akan ditampilkan di sini -->
+        <div id="taskDetailsContainer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Ambil elemen-elemen DOM
+    const searchInput = document.getElementById("searchInput");
+    const monthSelect = document.getElementById("monthSelect");
+    const yearSelect = document.getElementById("yearSelect");
+    const taskCards = document.getElementById("taskCards");
+    const detailsModalBody = document.getElementById("detailsModalBody");
+
+    // Tambahkan event listener untuk select "Month"
+    monthSelect.addEventListener("change", filterTasks);
+    // Tambahkan event listener untuk select "Year"
+    yearSelect.addEventListener("change", filterTasks);
+
+    function renderTasks(tasks) {
+      taskCards.innerHTML = "";
+
+      // Mengelompokkan tugas berdasarkan tanggal
+      const groupedTasks = {};
+      tasks.forEach((task) => {
+        const date = task.date;
+        if (!groupedTasks[date]) {
+          groupedTasks[date] = [];
+        }
+        groupedTasks[date].push(task);
+      });
+
+      // Merender satu card untuk setiap tanggal
+      for (const date in groupedTasks) {
+        const tasksOnDate = groupedTasks[date];
+
+        const card = document.createElement("div");
+        card.className = "col-12 col-md-6 mb-4";
+        card.innerHTML = `
+      <div class="card">
+                <div class="card-date">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span class="date-text">${date}</span>
+                </div>
+        
+          <div class="card-body">
+            <a href="#" class="btn btn-primary card-link" data-bs-toggle="modal" data-bs-target="#detailsModal" data-task-date="${date}">See Details</a>
+          </div>
+        </div>
+      `;
+        taskCards.appendChild(card);
+
+        // Tangani acara klik pada tombol "See Details" pada setiap card
+        card.querySelector(".card-link").addEventListener("click", function () {
+          renderDetailsModal(tasksOnDate);
+        });
+      }
+    }
+
+    function renderDetailsModal(tasks) {
+      detailsModalBody.innerHTML = "";
+
+      // Tambahkan judul "Name", "Start Time", dan "End Time"
+      const title = document.createElement("p");
+      title.innerHTML = `
+      <strong>Name</strong> &nbsp;&nbsp;&nbsp;
+      <strong>Start Time</strong> &nbsp;&nbsp;&nbsp;
+      <strong>End Time</strong> &nbsp;&nbsp;&nbsp;
+      <strong>Edit</strong>
+    `;
+      detailsModalBody.appendChild(title);
+
+      // Merender detail tugas dalam satu baris
+      tasks.forEach((task, index) => {
+        const taskDetails = document.createElement("p");
+        taskDetails.innerHTML = `
+        ${task.name} &nbsp;&nbsp;&nbsp;
+        ${task.start} &nbsp;&nbsp;&nbsp;
+        ${task.end} &nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-primary edit-button">Edit</button>
+      `;
+        detailsModalBody.appendChild(taskDetails);
+
+        // Tambahkan elemen <hr> setelah setiap detail tugas, kecuali untuk yang terakhir
+        if (index < tasks.length - 1) {
+          const hr = document.createElement("hr");
+          detailsModalBody.appendChild(hr);
+        }
+      });
+
+      // Tambahkan elemen button "Edit" pada setiap baris
+      const editButtons = detailsModalBody.querySelectorAll(".edit-button");
+      editButtons.forEach((button, index) => {
+        button.addEventListener("click", function () {
+          // Tangani logika pengeditan di sini, dengan menggunakan tasks[index] untuk mengidentifikasi tugas yang akan diubah
+          alert("Edit task logic goes here for task: " + tasks[index].name);
+        });
+      });
+    }
+    
+    function filterTasks() {
+      // Simulasi data dari backend (dummy)
+      const tasks = [
+        {
+          name: "Tugas 1",
+          start: "08:00 AM",
+          end: "10:00 AM",
+          date: "2024-01-22",
+        },
+        {
+          name: "Tugas 2",
+          start: "11:00 AM",
+          end: "01:00 PM",
+          date: "2024-01-23",
+        },
+        {
+          name: "Tugas 3",
+          start: "09:30 AM",
+          end: "11:00 AM",
+          date: "2023-12-15",
+        },
+        {
+          name: "Tugas 4",
+          start: "02:00 PM",
+          end: "04:00 PM",
+          date: "2024-02-10",
+        },
+        {
+          name: "Tugas 5",
+          start: "01:00 PM",
+          end: "03:00 PM",
+          date: "2024-02-10",
+        },
+        // Tambahkan data tugas lainnya
+      ];
+
+      const selectedMonth = monthSelect.value;
+      const selectedYear = yearSelect.value;
+      const filteredTasks = tasks.filter((task) => {
+        const taskMonth = task.date.split("-")[1];
+        const taskYear = task.date.split("-")[0];
+        return (
+          (selectedMonth === "all" || taskMonth === selectedMonth) &&
+          (selectedYear === "all" || taskYear === selectedYear)
+        );
+      });
+      // Render ulang tugas berdasarkan bulan dan tahun yang dipilih
+      renderTasks(filteredTasks);
+    }
+  });
+</script>
+<%- include('./template/footer'); %>

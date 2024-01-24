@@ -10,15 +10,14 @@ const app = express();
 // CRUD APIs
 
 // Create
-const createHistory = (
+const createHistory = (req,res) => (
   nama_Tugas,
   prioritas,
   workStart,
   workEnd,
   description
 ) => {
-  // const { nama_Tugas, prioritas, workStart, workEnd, description } =req.body;
-  // const { nama_Tugas, prioritas, workStart, workEnd, description } = formData;
+  const status= false
 
   const workDate = moment().format("YYYY-MM-DD");
 
@@ -30,24 +29,28 @@ const createHistory = (
   const endWorkHour = moment(workEnd, format);
   const differenceInHrs = endWorkHour.diff(startWorkHour, "hours");
 
-  // return res.json(moment().format("YYYY-MM-DD"));
+  if(endWorkHour.isBefore(startWorkHour)){
+    console.log('error');
+    return res.status(500).json("Hanya bisa memasukkan jam selesai setelah jam mulai");
+  }
 
   // // if work date != moment() -> return res fail
-  // if (workDate != moment().format("YYYY-MM-DD")) {
-  //   return res.status(500).json("Hanya bisa memasukkan di tanggal yang sama");
-  // }
+  if (workDate != moment().format("YYYY-MM-DD")) {
+    return res.status(500).json("Hanya bisa memasukkan di tanggal yang sama");
+  }
 
-  // pool.query(
-  //   "INSERT INTO history (nama_Tugas, prioritas, workStart, workEnd, description, workDate) VALUES (?, ?, ?, ?, ?, ?)",
-  //   [nama_Tugas, prioritas, workStart, workEnd, description, workDate],
-  //   (error, results) => {
-  //     if (error) {
-  //       res.status(500).json({ error });
-  //     } else {
-  //       res.status(201).json({ id: results.insertId });
-  //     }
-  //   }
-  // );
+  pool.query(
+    "INSERT INTO history (nama_Tugas, prioritas, workStart, workEnd, description, workDate) VALUES (?, ?, ?, ?, ?, ?)",
+    [nama_Tugas, prioritas, workStart, workEnd, description, workDate],
+    (error, results) => {
+      if (error) {
+        res.status(500).json({ error });
+      } else {
+        res.status(201).json({ id: results.insertId });
+        return status = true
+      }
+    }
+  );
 };
 
 // Read (all)
