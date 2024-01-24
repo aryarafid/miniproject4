@@ -11,8 +11,10 @@ const app = express();
 
 // Create
 const createHistory = (req, res) => {
-  const { nama_Tugas, prioritas, workStart, workEnd, description, workDate } =
+  const { nama_Tugas, prioritas, workStart, workEnd, description } =
     req.body;
+
+  const workDate = moment()
 
   // cek selisih jam agar tidak 24jam
   const format = "HH:mm";
