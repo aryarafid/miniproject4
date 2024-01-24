@@ -30,18 +30,18 @@
   <div class="row flex-wrap" id="taskCards">
     <!-- Data Dummy will be populated dynamically -->
 
-
     <% history.forEach(record => { %>
-      <p>Tugas ke - <%= record.Id %></p> 
-      <p>Nama Tugas: <%= record.nama_Tugas %></p>
-      <p>prioritas: <%= record.prioritas %></p>
-      <p>description: <%= record.description %></p>
-      <p>workStart: <%= record.workStart %></p>
-      <p>workEnd: <%= record.workEnd %></p>
-      <p>workDate: <%= record.workDate %></p>
+    <p>Tugas ke - <%= record.Id %></p>
+    <p>Nama Tugas: <%= record.nama_Tugas %></p>
+    <p>prioritas: <%= record.prioritas %></p>
+    <p>description: <%= record.description %></p>
+    <p>workStart: <%= record.workStart %></p>
+    <p>workEnd: <%= record.workEnd %></p>
+    <p>
+      workDate: <%= record.workDate.toLocaleDateString( 'id-ID', { day:
+      'numeric', month: 'long', year: 'numeric' }) %>
+    </p>
     <% }); %>
-
-
   </div>
 </div>
 
