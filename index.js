@@ -60,7 +60,7 @@ app.get("/logout", (req, res) => {
   });
 });
 
-app.get("/input", (req, res) => {
+app.get("/input", checkAuth, (req, res) => {
   res.render("to-do"); // Assuming you have a "form.ejs" file in your "views" directory
 });
 
@@ -73,7 +73,7 @@ app.post("/input", (req, res) => {
   });
 });
 
-app.get("/history", (req, res) => {
+app.get("/history", checkAuth, (req, res) => {
   // Run a query to get all history data
   const query =
     "SELECT *, CASE WHEN DATE(workDate) = CURDATE() THEN true ELSE false END AS perbandingan FROM history";
