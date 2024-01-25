@@ -1,7 +1,7 @@
 <%- include('./template/header'); %>
-<h1>Task Count Chart</h1>
-<div>
-  <canvas id="myChart" style="margin-top: 10rem; margin-right: 100rem;"></canvas>
+<div style="margin-top: 10rem">
+  <!-- <h1>Task Count Chart</h1> -->
+  <canvas id="myChart" style="margin-right: 10rem"></canvas>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
@@ -29,6 +29,16 @@
         y: {
           beginAtZero: true
         }
+      },
+      plugins:{
+        title: {
+      display: true,
+      text: 'Task Count Chart',
+      align: 'center',
+      font: {
+        size: 24
+      }
+      }
       }
     }
   });

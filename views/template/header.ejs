@@ -115,7 +115,7 @@
         background-color: #570000;
         border-color: #570000;
       } */
-/* 
+      /* 
       .btn-primary:hover {
         background-color: #570000;
         border-color: #570000;
@@ -192,11 +192,16 @@
         margin-left: 10px;
       }
 
-      .main-content, .todogeneral{
+      .main-content,
+      .todogeneral {
         margin-top: 100px;
       }
 
-
+      canvas {
+        display: block; /* Remove extra space below the canvas */
+        width: 50vw;
+        height: 50vh;
+      }
     </style>
   </head>
 
@@ -205,9 +210,7 @@
     <nav class="navbar">
       <div class="container-fluid">
         <!-- <button class="btn btn-danger btn-logout">Logout</button> -->
-        <a href="/logout" class="btn btn-danger btn-logout">
-          Logout
-        </a>
+        <a href="/logout" class="btn btn-danger btn-logout"> Logout </a>
       </div>
     </nav>
 
