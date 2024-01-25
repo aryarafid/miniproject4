@@ -5,7 +5,7 @@
   rel="stylesheet"
   href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"
 />
-<link rel="stylesheet" href="/resources/demos/style.css" />
+<!-- <link rel="stylesheet" href="/resources/demos/style.css" /> -->
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <link
@@ -35,29 +35,28 @@
 
     <div class="card">
       <div class="card-body">
-        <h4 class="mb-0">Edit Timesheet ID</h4>
+        <h4 class="mb-0">Edit Timesheet <%= workLog.Id %></h4>
 
-        <form method="post" action="/input">
+        <form method="post" action="/edit/<%= workLog.Id %>">
           <!-- 1strow -->
           <div class="row gy-3">
             <div class="col-md-4">
               <label for="datepicker"> Date: </label>
               <input
                 type="text"
-                id="datepicker"
-                name="datepicker"
+                id="workDate"
+                name="workDate"
                 class="form-control"
-                value="<%= new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %>"
+                value="<%= workLog.workDate %>"
                 disabled
               />
-              <!-- <input type="text" id="dateInput" disabled value="<%= new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) %>"> -->
-              <!-- <input
-              type="text"
-              id="datepicker"
-              class="form-control"
-              name="datepicker"
-              autocomplete="off"
-            /> -->
+              <input
+                type="hidden"
+                id="workDate"
+                name="workDate"
+                class="form-control"
+                value="<%= workLog.workDate %>"
+              />
             </div>
             <div class="col-md-4">
               <label for="startTime">Start Time:</label>
@@ -67,6 +66,8 @@
                 class="form-control"
                 autocomplete="off"
                 name="workStart"
+                value="<%= workLog.workStart %>"
+                required
               />
             </div>
             <div class="col-md-4">
@@ -77,7 +78,11 @@
                 class="form-control"
                 autocomplete="off"
                 name="workEnd"
+                value="<%= workLog.workEnd %>"
+                required
+
               />
+              
             </div>
           </div>
 
@@ -91,13 +96,20 @@
                   aria-label="Default select example"
                   name="nama_Tugas"
                   id="nama_Tugas"
+                required
+
                 >
-                  <option selected>Tipe Pekerjaan</option>
-                  <option value="Audit">Audit</option>
-                  <option value="BAU">BAU</option>
-                  <option value="Project">Project</option>
-                  <option value="CR">CR</option>
-                  <option value="SWR">SWR</option>
+                  <option>Tipe Pekerjaan</option>
+                  <option value="Audit" <% if (workLog.nama_Tugas === 'Audit') { %> selected <% } %> >
+                    Audit</option>
+                  <option value="BAU" <% if (workLog.nama_Tugas === 'BAU') { %> selected <% } %> >
+                    BAU</option>
+                  <option value="Project" <% if (workLog.nama_Tugas === 'Project') { %> selected <% } %> >
+                    Project</option>
+                  <option value="CR" <% if (workLog.nama_Tugas === 'CR') { %> selected <% } %> >
+                    CR</option>
+                  <option value="SWR" <% if (workLog.nama_Tugas === 'SWR') { %> selected <% } %> >
+                    SWR</option>
                 </select>
               </div>
             </div>
@@ -108,22 +120,26 @@
                   aria-label="Default select example"
                   name="prioritas"
                   id="prioritas"
+                required
+
                 >
-                  <option selected>Prioritas</option>
-                  <option value="Tinggi">Tinggi</option>
-                  <option value="Sedang">Sedang</option>
-                  <option value="Rendah">Rendah</option>
+                  <option>Prioritas</option>
+                  <option value="Tinggi" <% if (workLog.prioritas === 'Tinggi') { %> selected <% } %>>Tinggi</option>
+                  <option value="Sedang" <% if (workLog.prioritas === 'Sedang') { %> selected <% } %>>Sedang</option>
+                  <option value="Rendah" <% if (workLog.prioritas === 'Rendah') { %> selected <% } %>>Rendah</option>
                 </select>
               </div>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-12">
               <textarea
                 class="form-control"
                 id="description"
                 placeholder="Deskripsi Pekerjaan"
                 rows="3"
                 name="description"
-              ></textarea>
+                required
+
+              ><%= workLog.description %></textarea>
             </div>
             <div class="col-md-5 text-end d-grid">
               <button type="submit" class="btn btn-success">Edit</button>

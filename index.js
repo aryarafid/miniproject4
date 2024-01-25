@@ -80,17 +80,20 @@ app.post("/input", (req, res) => {
   });
 });
 
-app.get("/edit:Id", checkAuth, (req, res) => {
-  res.render("to-do-edit"); // Assuming you have a "form.ejs" file in your "views" directory
+app.get("/edit/:Id", (req, res) => {
+  const Id = req.params.Id;
+  historyController.getHistory(Id, (workLog) => {
+    res.render("to-do-edit", { workLog });
+  });
 });
 
-// app.post("/edit", (req, res) => {
-//   historyController.createHistory(req, res, (successMessage) => {
-//     res.render('to-do',{successMessage})
-//     // res.render("template/successalert");
-//     // res.redirect("history");
-//   });
-// });
+app.post("/edit/:Id", (req, res) => {
+  historyController.updateHistory2(req, res, (successMessage) => {
+    // workLogController.getWorkLogById(Id, (workLog) => {
+    res.render("history", { successMessage });
+    // });
+  });
+});
 
 app.get("/history", checkAuth, (req, res) => {
   // Run a query to get all history data
@@ -204,7 +207,7 @@ app.get("/chart", (req, res) => {
 
     // res.render('chart', {cdata: data});
     // res.render("chart", { data: JSON.stringify(data) });
-    res.render('chart', { data: JSON.stringify(data).replace(/'/g, "\\'") });
+    res.render("chart", { data: JSON.stringify(data).replace(/'/g, "\\'") });
   });
 });
 
