@@ -8,6 +8,8 @@ const historyController = require("./controllers/historyController");
 const router = express.Router();
 const pool = require("./config");
 const moment = require("moment");
+const { ChartJSNodeCanvas } = require("chartjs-node-canvas");
+const Chart = require("chart.js");
 
 const app = express();
 const port = 3000;
@@ -34,6 +36,12 @@ app.use(
     saveUnitialized: true,
   })
 );
+
+/////////////////////////////////////////////////////////////////////
+
+const width = 800; // px
+const height = 600; // px
+const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height });
 
 /////////////////////////////////////////////////////////////////////
 
@@ -64,14 +72,25 @@ app.get("/input", checkAuth, (req, res) => {
   res.render("to-do"); // Assuming you have a "form.ejs" file in your "views" directory
 });
 
-
 app.post("/input", (req, res) => {
   historyController.createHistory(req, res, (successMessage) => {
-    res.render('to-do',{successMessage})
+    res.render("to-do", { successMessage });
     // res.render("template/successalert");
     // res.redirect("history");
   });
 });
+
+app.get("/edit:Id", checkAuth, (req, res) => {
+  res.render("to-do-edit"); // Assuming you have a "form.ejs" file in your "views" directory
+});
+
+// app.post("/edit", (req, res) => {
+//   historyController.createHistory(req, res, (successMessage) => {
+//     res.render('to-do',{successMessage})
+//     // res.render("template/successalert");
+//     // res.redirect("history");
+//   });
+// });
 
 app.get("/history", checkAuth, (req, res) => {
   // Run a query to get all history data
@@ -87,6 +106,105 @@ app.get("/history", checkAuth, (req, res) => {
     // Pass the history data to the view
     // res.render('history2', { history: results });
     res.render("history3", { history: results });
+  });
+});
+
+//////////////////////////////////////////////////////
+app.get(
+  "/chart2",
+  // checkAuth,
+  async (req, res) => {
+    // Query to fetch and group data by nama_Tugas and workDate (monthly)
+    const query = `SELECT nama_Tugas,
+                        DATE_FORMAT(workDate, '%Y-%m') as Month,
+                        COUNT(*) as TaskCount
+                 FROM history
+                 GROUP BY nama_Tugas, Month
+                 ORDER BY Month, nama_Tugas`;
+
+    pool.query(query, async (err, result) => {
+      if (err) {
+        throw err;
+      }
+
+      const data = {
+        labels: [],
+        datasets: [],
+      };
+
+      // Helper function to find or create dataset
+      const getOrCreateDataset = (name) => {
+        let dataset = data.datasets.find((ds) => ds.label === name);
+        if (!dataset) {
+          dataset = {
+            label: name,
+            data: [],
+            borderWidth: 1,
+            backgroundColor: "rgba(0, 123, 255, 0.5)", // Set your preferred color
+          };
+          data.datasets.push(dataset);
+        }
+        return dataset;
+      };
+
+      let monthLabels = new Set();
+
+      // Populate chart data
+      result.forEach((row) => {
+        monthLabels.add(row.Month);
+        const dataset = getOrCreateDataset(row.nama_Tugas);
+        dataset.data.push({ x: row.Month, y: row.TaskCount });
+      });
+
+      data.labels = Array.from(monthLabels).sort();
+
+      // res.json(data); // Send JSON response
+      res.render("chart", { chartData: data });
+    });
+  }
+);
+
+app.get("/chart", (req, res) => {
+  // Query to fetch and group data by nama_Tugas and workDate (monthly)
+  const query = ` SELECT nama_Tugas, DATE_FORMAT(workDate, '%Y-%m') as Month, COUNT(*) as TaskCount FROM history GROUP BY nama_Tugas, Month ORDER BY Month, nama_Tugas; `;
+  pool.query(query, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    // Transform query result into a format suitable for Chart.js
+    const data = {
+      labels: [],
+      datasets: [],
+    };
+    // Helper function to find or create dataset
+    const getOrCreateDataset = (name) => {
+      let dataset = data.datasets.find((ds) => ds.label === name);
+      if (!dataset) {
+        dataset = {
+          label: name,
+          data: [],
+          borderWidth: 1,
+          backgroundColor: "rgba(0, 123, 255, 0.5)", // Set your preferred color
+        };
+        data.datasets.push(dataset);
+      }
+      return dataset;
+    };
+    let monthLabels = new Set();
+    // Populate chart data
+    result.forEach((row) => {
+      monthLabels.add(row.Month);
+      const dataset = getOrCreateDataset(row.nama_Tugas);
+      dataset.data.push({ x: row.Month, y: row.TaskCount });
+    });
+    data.labels = Array.from(monthLabels).sort();
+    // Get the view name from the query parameter
+    // const view = req.query.view;
+    // Send data to the view
+
+    // res.render('chart', {cdata: data});
+    // res.render("chart", { data: JSON.stringify(data) });
+    res.render('chart', { data: JSON.stringify(data).replace(/'/g, "\\'") });
   });
 });
 

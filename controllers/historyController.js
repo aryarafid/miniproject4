@@ -116,6 +116,53 @@ const updateHistory = (req, res) => {
   );
 };
 
+const updateHistory2 = (req, res, callback) => {
+  const { nama_Tugas, prioritas, workStart, workEnd, description } = req.body;
+
+  const workDate = moment().format("YYYY-MM-DD");
+
+  const format = "HH:mm";
+  const startWorkHour = moment(workStart, format);
+  const endWorkHour = moment(workEnd, format);
+
+  if (endWorkHour.isBefore(startWorkHour)) {
+    console.log("error");
+    throw console.error("Hanya bisa memasukkan jam selesai setelah jam mulai");
+  }
+
+  // // if work date != moment() -> return res fail
+  if (workDate != moment().format("YYYY-MM-DD")) {
+    throw console.error("Hanya bisa memasukkan di tanggal yang sama");
+  }
+
+  pool.query(
+    "INSERT INTO history (nama_Tugas, prioritas, workStart, workEnd, description, workDate) VALUES (?, ?, ?, ?, ?, ?)",
+    [nama_Tugas, prioritas, workStart, workEnd, description, workDate],
+    (error, results) => {
+      if (error) {
+        throw error;
+      } else {
+        console.log(
+          "berhasil => " +
+            nama_Tugas +
+            "," +
+            prioritas +
+            "," +
+            workStart +
+            "," +
+            workEnd +
+            "," +
+            description +
+            "," +
+            workDate
+        );
+        const successMessage = "Sukses input data";
+        callback(successMessage);
+      }
+    }
+  );
+};
+
 // Delete
 const deleteHistory = (req, res) => {
   const { Id } = req.params;

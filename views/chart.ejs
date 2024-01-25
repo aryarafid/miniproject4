@@ -1,0 +1,36 @@
+<%- include('./template/header'); %>
+<h1>Task Count Chart</h1>
+<div>
+  <canvas id="myChart" style="margin-top: 10rem; margin-right: 100rem;"></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+<script>
+  const jsonData = '<%- data.replace(/'/g, "U+0026") %>'
+  const data = JSON.parse(jsonData);
+
+  const ctx = document.getElementById('myChart').getContext('2d');
+  const myChart = new Chart(ctx, {
+    type: 'bar', // Change to 'line' if you want a line chart
+    data: data,
+    options: {
+      scales: {
+        x: {
+          type: 'time',
+          time: {
+            unit: 'month'
+          },
+          adapters: {
+            date: {
+              // This is where you can set specific options for date-fns if needed
+            }
+          }
+        },
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+<%- include('./template/footer'); %>

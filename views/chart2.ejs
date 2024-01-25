@@ -1,0 +1,38 @@
+<%- include('./template/header'); %>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<h1>Task Count Chart</h1>
+<canvas id="myChart"></canvas>
+
+<h1>Chart Data</h1>
+<p>This is a chart that shows the data from the database.</p>
+<canvas id="myChart" width="400" height="400"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js"></script>
+
+
+<script>
+  // Get the data from the server
+  const data = JSON.stringify(data)
+  // Create a chart
+  const ctx = document.getElementById('myChart').getContext('2d');
+  const myChart = new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: {
+          scales: {
+              x: {
+                  type: 'time',
+                  time: {
+                      unit: 'month'
+                  }
+              },
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+</script>
+
+<%- include('./template/footer'); %>
