@@ -108,7 +108,7 @@ app.get("/history", checkAuth, (req, res) => {
 
     // Pass the history data to the view
     // res.render('history2', { history: results });
-    res.render("history3", { history: results });
+    res.render("history4", { history: results });
   });
 });
 
@@ -208,6 +208,42 @@ app.get("/chart", (req, res) => {
     // res.render('chart', {cdata: data});
     // res.render("chart", { data: JSON.stringify(data) });
     res.render("chart", { data: JSON.stringify(data).replace(/'/g, "\\'") });
+  });
+});
+
+app.get('test/history4', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+ 
+// Handle AJAX requests from the index.html file
+app.get('/history4', (req, res) => {
+  const express = require('express');
+  const mysql = require('mysql');
+  const app = express();
+  const connection = mysql.createConnection({
+    host: 'localhost', // Change this to your host
+    user: 'root', // Change this to your user
+    password: 'root', // Change this to your password
+    database: 'attendance' // Change this to your database name
+  });
+  // Get the query parameters
+  const month = req.query.month;
+  const year = req.query.year;
+ 
+  // Create a SQL query to get the data from the history table
+  let sql = 'SELECT nama_Tugas, workDate, workStart, workEnd, prioritas, description, CASE WHEN DATE(workDate) = CURDATE() THEN true ELSE false END AS editable FROM history';
+  // Add a WHERE clause if the month and year are specified
+  if (month && year) {
+    sql += ` WHERE MONTH(workDate) = ${month} AND YEAR(workDate) = ${year}`;
+  }
+  // Execute the query and send the results as JSON
+  console.log(sql);
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error executing the query: ' + err.stack);
+      return;
+    }
+    res.json(results);
   });
 });
 
