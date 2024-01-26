@@ -90,7 +90,7 @@ app.get("/edit/:Id", checkAuth,(req, res) => {
 app.post("/edit/:Id", (req, res) => {
   historyController.updateHistory2(req, res, (successMessage) => {
     // workLogController.getWorkLogById(Id, (workLog) => {
-    res.render("history", { successMessage });
+    res.render("history4", { successMessage });
     // });
   });
 });
@@ -179,15 +179,28 @@ app.get("/chart", checkAuth, (req, res) => {
       labels: [],
       datasets: [],
     };
+    // Array of colors for each label
+    const colors = [
+      "rgba(255, 99, 132, 0.5)", // Red
+      "rgba(54, 162, 235, 0.5)", // Blue
+      "rgba(255, 206, 86, 0.5)", // Yellow
+      "rgba(75, 192, 192, 0.5)", // Green
+      "rgba(153, 102, 255, 0.5)", // Purple
+      "rgba(255, 159, 64, 0.5)", // Orange
+    ];
     // Helper function to find or create dataset
     const getOrCreateDataset = (name) => {
       let dataset = data.datasets.find((ds) => ds.label === name);
       if (!dataset) {
+        // Get the index of the label in the result array
+        const index = result.findIndex((row) => row.nama_Tugas === name);
+        // Use the index to get the corresponding color from the array
+        const color = colors[index % colors.length];
         dataset = {
           label: name,
           data: [],
           borderWidth: 1,
-          backgroundColor: "rgba(0, 123, 255, 0.5)", // Set your preferred color
+          backgroundColor: color, // Set the color from the array
         };
         data.datasets.push(dataset);
       }
@@ -211,6 +224,7 @@ app.get("/chart", checkAuth, (req, res) => {
   });
 });
 
+
 app.get('test/history4', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
@@ -231,10 +245,15 @@ app.get('/history4', (req, res) => {
   const year = req.query.year;
  
   // Create a SQL query to get the data from the history table
-  let sql = 'SELECT nama_Tugas, workDate, workStart, workEnd, prioritas, description, CASE WHEN DATE(workDate) = CURDATE() THEN true ELSE false END AS editable FROM history';
+  // let sql = 'SELECT Id, nama_Tugas, workDate, workStart, workEnd, prioritas, description, CASE WHEN DATE(workDate) = CURDATE() THEN true ELSE false END AS editable FROM history ORDER BY Id DESC';
+  let sql = `SELECT Id, nama_Tugas, workDate, workStart, workEnd, prioritas, description, CASE WHEN DATE(workDate) = CURDATE() THEN true ELSE false END AS editable FROM history`;
+  
   // Add a WHERE clause if the month and year are specified
   if (month && year) {
-    sql += ` WHERE MONTH(workDate) = ${month} AND YEAR(workDate) = ${year}`;
+    sql += ` WHERE MONTH(workDate) = ${month} AND YEAR(workDate) = ${year} ORDER BY Id DESC`;
+  }
+  else{
+    sql += ` ORDER BY Id DESC`;
   }
   // Execute the query and send the results as JSON
   console.log(sql);
