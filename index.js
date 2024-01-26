@@ -80,7 +80,7 @@ app.post("/input", (req, res) => {
   });
 });
 
-app.get("/edit/:Id", (req, res) => {
+app.get("/edit/:Id", checkAuth,(req, res) => {
   const Id = req.params.Id;
   historyController.getHistory(Id, (workLog) => {
     res.render("to-do-edit", { workLog });
@@ -113,61 +113,61 @@ app.get("/history", checkAuth, (req, res) => {
 });
 
 //////////////////////////////////////////////////////
-app.get(
-  "/chart2",
-  // checkAuth,
-  async (req, res) => {
-    // Query to fetch and group data by nama_Tugas and workDate (monthly)
-    const query = `SELECT nama_Tugas,
-                        DATE_FORMAT(workDate, '%Y-%m') as Month,
-                        COUNT(*) as TaskCount
-                 FROM history
-                 GROUP BY nama_Tugas, Month
-                 ORDER BY Month, nama_Tugas`;
+// app.get(
+//   "/chart2",
+//   checkAuth,
+//   async (req, res) => {
+//     // Query to fetch and group data by nama_Tugas and workDate (monthly)
+//     const query = `SELECT nama_Tugas,
+//                         DATE_FORMAT(workDate, '%Y-%m') as Month,
+//                         COUNT(*) as TaskCount
+//                  FROM history
+//                  GROUP BY nama_Tugas, Month
+//                  ORDER BY Month, nama_Tugas`;
 
-    pool.query(query, async (err, result) => {
-      if (err) {
-        throw err;
-      }
+//     pool.query(query, async (err, result) => {
+//       if (err) {
+//         throw err;
+//       }
 
-      const data = {
-        labels: [],
-        datasets: [],
-      };
+//       const data = {
+//         labels: [],
+//         datasets: [],
+//       };
 
-      // Helper function to find or create dataset
-      const getOrCreateDataset = (name) => {
-        let dataset = data.datasets.find((ds) => ds.label === name);
-        if (!dataset) {
-          dataset = {
-            label: name,
-            data: [],
-            borderWidth: 1,
-            backgroundColor: "rgba(0, 123, 255, 0.5)", // Set your preferred color
-          };
-          data.datasets.push(dataset);
-        }
-        return dataset;
-      };
+//       // Helper function to find or create dataset
+//       const getOrCreateDataset = (name) => {
+//         let dataset = data.datasets.find((ds) => ds.label === name);
+//         if (!dataset) {
+//           dataset = {
+//             label: name,
+//             data: [],
+//             borderWidth: 1,
+//             backgroundColor: "rgba(0, 123, 255, 0.5)", // Set your preferred color
+//           };
+//           data.datasets.push(dataset);
+//         }
+//         return dataset;
+//       };
 
-      let monthLabels = new Set();
+//       let monthLabels = new Set();
 
-      // Populate chart data
-      result.forEach((row) => {
-        monthLabels.add(row.Month);
-        const dataset = getOrCreateDataset(row.nama_Tugas);
-        dataset.data.push({ x: row.Month, y: row.TaskCount });
-      });
+//       // Populate chart data
+//       result.forEach((row) => {
+//         monthLabels.add(row.Month);
+//         const dataset = getOrCreateDataset(row.nama_Tugas);
+//         dataset.data.push({ x: row.Month, y: row.TaskCount });
+//       });
 
-      data.labels = Array.from(monthLabels).sort();
+//       data.labels = Array.from(monthLabels).sort();
 
-      // res.json(data); // Send JSON response
-      res.render("chart", { chartData: data });
-    });
-  }
-);
+//       // res.json(data); // Send JSON response
+//       res.render("chart", { chartData: data });
+//     });
+//   }
+// );
 
-app.get("/chart", (req, res) => {
+app.get("/chart", checkAuth, (req, res) => {
   // Query to fetch and group data by nama_Tugas and workDate (monthly)
   const query = ` SELECT nama_Tugas, DATE_FORMAT(workDate, '%Y-%m') as Month, COUNT(*) as TaskCount FROM history GROUP BY nama_Tugas, Month ORDER BY Month, nama_Tugas; `;
   pool.query(query, (err, result) => {
