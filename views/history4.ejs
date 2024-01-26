@@ -1,0 +1,178 @@
+<%- include('./template/header'); %>
+<meta charset="UTF-8" />
+<title>Dropdown Filter</title>
+<style>
+  /* Sytling div */
+  #main-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
+    margin-left: 0px;
+  }
+  #filter {
+    display: flex;
+  }
+
+  #history{
+    margin-top: 75px;
+  }
+
+  /* Edit Button Show/Hide */
+  #edit-button {
+    display: none;
+    background-color: red;
+  }
+
+  /* Style the table */
+  table {
+    border-collapse: collapse;
+    width: auto;
+    justify-content: center;
+  }
+
+  /* Style the table header */
+  th {
+    background-color: #7b141f;
+    color: white;
+  }
+
+  /* Style the table cells */
+  td,
+  th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  /* Style the odd rows */
+  tr:nth-child(odd) {
+    background-color: #f2f2f2;
+  }
+</style>
+  <body>
+    <div id="main-container">
+      <div id="filter">
+        <div class="row">
+          <h1>Dropdown Filter</h1>
+          <p>Select a month and a year to filter the data:</p>
+        </div>
+        <!-- Create two dropdown menus for month and year -->
+        <div id="history">
+          <select id="month-dropdown">
+            <option value="">All month</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
+          <select id="year-dropdown">
+            <option value="">All year</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+          </select>
+        </div>
+      </div>
+      <!-- Create a table to display the data -->
+        <table id="data-table">
+          <thead>
+            <tr>
+              <th>Task Name</th>
+              <th>Work Date</th>
+              <th>Work Start</th>
+              <th>Work End</th>
+              <th>Priority</th>
+              <th>Description</th>
+              <th>Edit Button</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- The table body will be populated by JavaScript -->
+          </tbody>
+        </table>
+    </div>
+    <script>
+      // Get the dropdown and table elements
+      const monthDropdown = document.getElementById("month-dropdown");
+      const yearDropdown = document.getElementById("year-dropdown");
+      const dataTable = document.getElementById("data-table");
+
+      // FetchData
+      const fetchData = async() => {
+        const month = monthDropdown.value;
+        const year = yearDropdown.value;
+
+        const url = `http://localhost:3000/history4?month=${month}&year=${year}`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        dataTable.tBodies[0].innerHTML = "";
+
+        for (const item of data) {
+        // Create a table row element
+          const tr = document.createElement("tr");
+
+          //// new var 
+          const editableCell = document.createElement("td");
+
+          // Loop through the item object and create table cells
+          for (const key in item) {
+            // Create a table cell element
+            const td = document.createElement("td");
+
+            // Check if the current key is "editable"
+            if (key === "editable") {
+              // If editable is 1, create and append an "Edit" button
+              if (item[key] === 1) {
+                const editButton = document.createElement("button");
+                editButton.textContent = "Edit";
+                editButton.style.backgroundColor = "#e2071f";
+                editButton.style.color = "white";
+                editButton.style.textAlign = "center";
+
+                td.appendChild(editButton);
+
+                editButton.addEventListener("click", () => {
+                  // Implement your edit logic here
+                  // You can use item or its properties to identify the specific row to edit
+                  console.log("Edit button clicked for row:", item);
+                });
+              } else {
+                // If editable is 0, display an empty cell
+                }
+              } else {
+                td.textContent = item[key];
+              }
+
+            // Append the cell to the row
+            tr.appendChild(td);
+          }
+
+          // Append the row to the table body
+          dataTable.tBodies[0].appendChild(tr);
+        }
+      };
+
+    (async() => {
+      await fetchData();
+      
+      // Add event listeners to the dropdown menus to fetch the data when changed
+      monthDropdown.addEventListener("change", fetchData);
+      yearDropdown.addEventListener("change", fetchData);
+    })();
+
+      // Fetch the data initially
+      // fetchData();
+    </script>
+  </body>
+  <%- include('./template/footer'); %>
+</html>
