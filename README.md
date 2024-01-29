@@ -1,6 +1,6 @@
 # miniproject4
 
-Cara jalankan project setelah diclone lewat github desktop:
+Cara jalankan project setelah meng-clone:
 
 1. import `attendance.sql` ke phpmyadmin Anda
 2. ke file `config.js`, edit `host`,`user`,`password` sesuai database Anda
